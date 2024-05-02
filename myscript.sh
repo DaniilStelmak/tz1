@@ -6,7 +6,7 @@ output_dir="$2"
 # Создаём выходную директорию, если она не существует
 mkdir -p "$output_dir"
 
-function copy_files {
+copy_files () {
     # Перебор всех элементов в текущей директории (включая скрытые)
     for file in "$1"/* "$1"/.*; do
         # Исключить текущую и родительскую директории
@@ -29,17 +29,17 @@ function copy_files {
                 if [[ -e "$new_file" ]]; then
                     i=1
                     while [[ -e "$output_dir/${base}_${i}${ext}" ]]; do
-                        let i++
+                        (( i++ ))
                     done
                     new_file="$output_dir/${base}_${i}${ext}"
                 fi
 
-                # Копировать файл или ссылку
+                # Копирование
                 if [[ -L "$file" ]]; then
-                    # Копировать ссылку
+                    # Ссылку
                     cp -d "$file" "$new_file"
                 else
-                    # Копировать файл
+                    # Файл
                     cp "$file" "$new_file"
                 fi
             fi
